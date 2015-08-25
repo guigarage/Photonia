@@ -14,6 +14,7 @@
         <module>photonia-polymer-client</module>
         <module>photonia-model</module>
         <module>photonia-javafx-client</module>
+        <module>photonia-server-spring</module>
     </modules>
 
     <properties>

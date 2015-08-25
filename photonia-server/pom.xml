@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>com.canoo.dolphin-platform</groupId>
-            <artifactId>dolphin-platform-server-spring</artifactId>
+            <artifactId>dolphin-platform-server</artifactId>
             <version>0.0.3</version>
         </dependency>
         <dependency>
