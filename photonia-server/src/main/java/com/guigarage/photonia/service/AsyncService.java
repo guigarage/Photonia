@@ -8,7 +8,7 @@ public interface AsyncService {
 
     <V> Future<V> call(Callable<V> callable, Consumer<Future<V>> onDone);
 
-    Future<Void> run(Runnable runnable, Consumer<Void> onDone);
+    Future<Void> run(Runnable runnable, Consumer<Future<Void>> onDone);
 
     <V> Future<V> call(Callable<V> callable);
 
