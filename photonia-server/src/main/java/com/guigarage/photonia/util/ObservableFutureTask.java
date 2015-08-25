@@ -16,6 +16,10 @@ public class ObservableFutureTask<V> extends FutureTask<V> implements Observable
         locker = new Locker();
     }
 
+    public ObservableFutureTask(Runnable runnable) {
+        this(runnable, null);
+    }
+
     public ObservableFutureTask(Runnable runnable, V result) {
         super(runnable, result);
         locker = new Locker();

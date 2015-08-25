@@ -27,7 +27,7 @@ public class Album {
         folders = new CopyOnWriteArrayList<>();
         this.thumbnailCache = thumbnailCache;
 
-        albumPath = Paths.get("/Users/hendrikebbers/Desktop/Album/");
+        albumPath = Paths.get(path);
         if (!albumPath.toFile().exists()) {
             albumPath.toFile().mkdirs();
         }

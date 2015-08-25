@@ -17,5 +17,10 @@
             <artifactId>dolphin-platform-server-spring</artifactId>
             <version>0.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.guigarage</groupId>
+            <artifactId>photonia-server</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
