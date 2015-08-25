@@ -1,14 +1,5 @@
 package com.guigarage.photonia.folder;
 
-import com.guigarage.photonia.MetadataUtils;
-import com.guigarage.photonia.service.AsyncService;
-import com.guigarage.photonia.service.PhotoniaService;
-import com.guigarage.photonia.thumbnail.ThumbnailCache;
-import com.guigarage.photonia.types.JpegImageFile;
-import com.guigarage.photonia.types.RenderedImageFile;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,6 +8,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+
+import com.guigarage.photonia.MetadataUtils;
+import com.guigarage.photonia.service.AsyncService;
+import com.guigarage.photonia.service.PhotoniaService;
+import com.guigarage.photonia.thumbnail.ThumbnailCache;
+import com.guigarage.photonia.types.JpegImageFile;
+import com.guigarage.photonia.types.RenderedImageFile;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 public class ImageFolder {
 
@@ -151,27 +151,17 @@ public class ImageFolder {
     }
 
     public JpegImageFile getNext(JpegImageFile file) {
-        for (int i = 0; i < images.size(); i++) {
-            if (images.get(i).getUuid().equals(file.getUuid())) {
-                if (i < images.size() - 1) {
-                    return images.get(i + 1);
-                } else {
-                    return images.get(0);
-                }
-            }
+        int i = images.indexOf(file);
+        if (i < images.size()) {
+            return images.get(i + 1);
         }
         return null;
     }
 
     public JpegImageFile getPrev(JpegImageFile file) {
-        for (int i = 0; i < images.size(); i++) {
-            if (images.get(i).getUuid().equals(file.getUuid())) {
-                if (i > 0) {
-                    return images.get(i - 1);
-                } else {
-                    return images.get(images.size() - 1);
-                }
-            }
+        int i = images.indexOf(file);
+        if (i > 0) {
+            return images.get(i - 1);
         }
         return null;
     }
