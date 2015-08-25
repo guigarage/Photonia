@@ -1,5 +1,10 @@
 package com.guigarage.photonia.types;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.UUID;
+
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
@@ -8,11 +13,6 @@ import com.drew.metadata.file.FileMetadataDirectory;
 import com.guigarage.photonia.AllowedExtensionsProvider;
 import com.guigarage.photonia.MetadataUtils;
 import org.apache.commons.io.FilenameUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.UUID;
 
 public abstract class ImageFile {
 
@@ -161,5 +161,20 @@ public abstract class ImageFile {
 
     public int getRating() {
         return rating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final ImageFile imageFile = (ImageFile) o;
+
+        return uuid.equals(imageFile.uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return uuid.hashCode();
     }
 }
