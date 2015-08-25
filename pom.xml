@@ -13,6 +13,7 @@
         <module>photonia-server</module>
         <module>photonia-polymer-client</module>
         <module>photonia-model</module>
+        <module>photonia-javafx-client</module>
     </modules>
 
     <properties>
