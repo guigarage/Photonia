@@ -43,9 +43,9 @@ public class FolderViewController extends AbstractController {
         bean.getSelectedImageId().set(null);
         bean.getName().set(folder.getName());
         bean.getImages().clear();
-        beanManager.removeAll(FolderViewBean.FolderImageBean.class);
+        beanManager.removeAll(FolderViewBean.ImageBean.class);
         for (JpegImageFile imageFile : folder.getImages()) {
-            FolderViewBean.FolderImageBean imageBean = beanManager.create(FolderViewBean.FolderImageBean.class);
+            FolderViewBean.ImageBean imageBean = beanManager.create(FolderViewBean.ImageBean.class);
             imageBean.getId().set(imageFile.getUuid());
             imageBean.getHasRaw().set(imageFile.getRawImageFile() != null);
             imageBean.getRating().set(imageFile.getRating());

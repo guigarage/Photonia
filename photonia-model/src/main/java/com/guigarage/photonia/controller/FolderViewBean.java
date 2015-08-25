@@ -11,13 +11,13 @@ public class FolderViewBean {
 
     private Property<String> selectedImageId;
 
-    private ObservableList<FolderImageBean> images;
+    private ObservableList<ImageBean> images;
 
     public Property<String> getName() {
         return name;
     }
 
-    public ObservableList<FolderImageBean> getImages() {
+    public ObservableList<ImageBean> getImages() {
         return images;
     }
 
@@ -25,8 +25,8 @@ public class FolderViewBean {
         return selectedImageId;
     }
 
-    @DolphinBean("FolderImageBean")
-    public class FolderImageBean {
+    @DolphinBean
+    public class ImageBean {
 
         private Property<Integer> rating;
 

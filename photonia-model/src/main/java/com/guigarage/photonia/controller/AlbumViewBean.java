@@ -7,14 +7,14 @@ import com.canoo.dolphin.mapping.Property;
 @DolphinBean("AlbumViewBean")
 public class AlbumViewBean {
 
-    private ObservableList<AlbumFolderBean> folders;
+    private ObservableList<FolderBean> folders;
 
-    public ObservableList<AlbumFolderBean> getFolders() {
+    public ObservableList<FolderBean> getFolders() {
         return folders;
     }
 
-    @DolphinBean("AlbumFolderBean")
-    public class AlbumFolderBean {
+    @DolphinBean
+    public class FolderBean {
 
         private Property<Integer> imageCount;
 

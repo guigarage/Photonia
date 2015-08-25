@@ -31,9 +31,9 @@ public class AlbumViewController extends AbstractController {
 
     private void updateBean() {
         bean.getFolders().clear();
-        beanManager.removeAll(AlbumViewBean.AlbumFolderBean.class);
+        beanManager.removeAll(AlbumViewBean.FolderBean.class);
         for (ImageFolder folder : photoniaService.getAlbum().getFolders()) {
-            AlbumViewBean.AlbumFolderBean folderBean = beanManager.create(AlbumViewBean.AlbumFolderBean.class);
+            AlbumViewBean.FolderBean folderBean = beanManager.create(AlbumViewBean.FolderBean.class);
             folderBean.getName().set(folder.getName());
             folderBean.getImageCount().set(folder.getImages().size());
         }
