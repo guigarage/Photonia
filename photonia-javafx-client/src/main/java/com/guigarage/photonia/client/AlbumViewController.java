@@ -41,7 +41,7 @@ public class AlbumViewController {
     }
 
     private void update(AlbumViewBean bean) {
-        titleLabel.textProperty().bind(FXBinder.wrapStringProperty(bean.getName()).bi);
+        titleLabel.textProperty().bind(FXBinder.wrapStringProperty(bean.getName()));
         if (bean != null) {
             imageGrid.setItems(FXBinder.wrapList(bean.getImages()));
         }
