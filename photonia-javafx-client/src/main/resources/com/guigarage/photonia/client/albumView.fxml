@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import org.controlsfx.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+        <GridView fx:id="imageGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER" />
+   </center>
+   <top>
+      <Label fx:id="titleLabel" text="Label" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <Button fx:id="backButton" mnemonicParsing="false" text="back" BorderPane.alignment="CENTER" />
+   </bottom>
+</BorderPane>

@@ -13,4 +13,21 @@
 
     <artifactId>photonia-javafx-client</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.40.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.guigarage</groupId>
+            <artifactId>photonia-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.canoo.dolphin-platform</groupId>
+            <artifactId>dolphin-platform-client-javafx</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+    </dependencies>
 </project>

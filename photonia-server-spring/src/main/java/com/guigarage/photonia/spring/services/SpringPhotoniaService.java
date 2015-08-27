@@ -53,11 +53,11 @@ public class SpringPhotoniaService implements PhotoniaService {
 
     @Override
     public String getImageUrl(String id) {
-        return null;
+        return "http://localhost:8080/images/get";
     }
 
     @Override
     public String getImageThumbnailUrl(String id) {
-        return null;
+        return "http://localhost:8080/thumbs/get";
     }
 }
