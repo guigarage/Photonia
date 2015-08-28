@@ -46,7 +46,7 @@ public class ThumbnailCache {
             if (thumbFile != null) {
                 return ImageIO.read(thumbFile);
             } else {
-                ObservableFutureTask<BufferedImage> syncTask = new ObservableFutureTask<>(() -> addOrUpdate(imageFile));
+                ObservableFutureTask<BufferedImage> syncTask = new ObservableFutureTask<BufferedImage>(() -> addOrUpdate(imageFile));
                 syncTask.onDone(f -> tasksMapLock.runLocked(() -> tasks.remove(imageFile.getUuid())));
                 tasksMapLock.runLocked(() -> tasks.put(imageFile.getUuid(), syncTask));
                 return syncTask.get();
@@ -55,6 +55,7 @@ public class ThumbnailCache {
     }
 
     public void addOrUpdateAsync(RenderedImageFile imageFile, AsyncService asyncService) {
+        long a = System.currentTimeMillis();
         Future<BufferedImage> task = asyncService.call(() -> {
             try {
                 return addOrUpdate(imageFile);
@@ -62,6 +63,7 @@ public class ThumbnailCache {
                 throw new RuntimeException("Error while loading thumbnail", e);
             }
         }, f -> tasksMapLock.runLocked(() -> tasks.remove(imageFile.getUuid())));
+        System.out.println("TIME: " + (System.currentTimeMillis() - a));
         tasksMapLock.runLocked(() -> {
             if (!task.isDone()) {
                 tasks.put(imageFile.getUuid(), task);
