@@ -15,7 +15,7 @@
         <dependency>
             <groupId>com.canoo.dolphin-platform</groupId>
             <artifactId>dolphin-platform-core</artifactId>
-            <version>0.0.3</version>
+            <version>${dolphin-platform.version}</version>
         </dependency>
     </dependencies>
 

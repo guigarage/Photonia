@@ -4,6 +4,7 @@ import com.canoo.dolphin.client.javafx.FXBinder;
 import com.guigarage.photonia.controller.library.LibraryViewAlbumBean;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import org.controlsfx.control.GridCell;
 
 import java.util.function.Consumer;
@@ -17,8 +18,16 @@ public class AlbumCell extends GridCell<LibraryViewAlbumBean> {
         this.imageView = new ImageView();
 
         imageView.setPreserveRatio(true);
-        imageView.fitWidthProperty().bind(widthProperty());
-        imageView.fitHeightProperty().bind(heightProperty());
+        //imageView.fitWidthProperty().bind(widthProperty());
+        //imageView.fitHeightProperty().bind(heightProperty());
+        setStyle("-fx-border-width: 2; -fx-border-color: red");
+
+        Rectangle clip = new Rectangle();
+        clip.setX(0);
+        clip.setY(0);
+        clip.widthProperty().bind(widthProperty());
+        clip.heightProperty().bind(heightProperty());
+        setClip(clip);
 
         setGraphic(imageView);
 
@@ -34,7 +43,9 @@ public class AlbumCell extends GridCell<LibraryViewAlbumBean> {
         setText("");
 
         if(item != null) {
-            textProperty().bind(FXBinder.wrapStringProperty(item.getName()).concat(" (").concat(FXBinder.wrapIntProperty(item.getImageCount()).asString()).concat(")"));
+            String name = item.getName().get();
+            System.out.println(name);
+            //textProperty().bind(FXBinder.wrapStringProperty();
             if(item.getCoverUrl().get() != null) {
                 imageView.setImage(new Image(item.getCoverUrl().get()));
             }

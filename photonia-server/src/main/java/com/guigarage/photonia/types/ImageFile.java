@@ -97,6 +97,7 @@ public abstract class ImageFile {
     }
 
     private void createImageMetadate() {
+        /*
         try {
             Metadata metadata = MetadataUtils.getMetadata(toFile());
 
@@ -129,6 +130,7 @@ public abstract class ImageFile {
         } catch (Exception e) {
             throw new RuntimeException("Can't create Metadata for image", e);
         }
+        */
     }
 
     public String getImageName() {

@@ -33,6 +33,7 @@ public class AlbumViewController {
         beanManager.send("AlbumViewController:initView", new ClientBeanManager.Param("id", id));
     }
 
+    @FXML
     public void initialize() {
         imageGrid.setCellFactory(e -> new ImageCell(id -> routing.showImage(id)));
         imageGrid.setCellHeight(340);

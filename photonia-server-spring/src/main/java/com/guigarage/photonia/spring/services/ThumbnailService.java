@@ -28,7 +28,7 @@ public class ThumbnailService {
         Album album = photoniaService.getAlbum();
         JpegImageFile imageFile = album.getImageFileById(id);
         if(imageFile != null) {
-            BufferedImage thumb = photoniaService.getThumbnailCache().getThumb(imageFile);
+            BufferedImage thumb = photoniaService.getThumbnailCache().getThumbnail(imageFile);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             ImageIO.write(thumb, "JPG", outputStream);
             return outputStream.toByteArray();

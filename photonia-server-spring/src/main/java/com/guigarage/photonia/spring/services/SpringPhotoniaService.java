@@ -1,5 +1,6 @@
 package com.guigarage.photonia.spring.services;
 
+import com.canoo.dolphin.server.event.DolphinEventBus;
 import com.guigarage.photonia.Album;
 import com.guigarage.photonia.folder.TrashFolder;
 import com.guigarage.photonia.service.AsyncService;
@@ -24,10 +25,13 @@ public class SpringPhotoniaService implements PhotoniaService {
     @Inject
     private AsyncService asyncService;
 
+    @Inject
+    private DolphinEventBus eventBus;
+
     @PostConstruct
     public void init() {
         try {
-            thumbnailCache = new ThumbnailCache(new File("/Users/hendrikebbers/Desktop/photonia/thumbnails"), 400);
+            thumbnailCache = new ThumbnailCache(new File("/Users/hendrikebbers/Desktop/photonia/thumbnails"), 400, id -> eventBus.publish("image-refresh", id));
             myAlbum = new Album("/Users/hendrikebbers/Desktop/photonia/album", thumbnailCache, asyncService);
             trashFolder = new TrashFolder("/Users/hendrikebbers/Desktop/photonia/trash", asyncService, thumbnailCache);
         } catch (IOException e) {

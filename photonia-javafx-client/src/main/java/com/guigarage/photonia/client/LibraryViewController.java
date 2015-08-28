@@ -24,6 +24,7 @@ public class LibraryViewController {
         beanManager.send("LibraryViewController:initView");
     }
 
+    @FXML
     public void initialize() {
         albumGrid.setCellFactory(e -> new AlbumCell(id -> routing.showAlbum(id)));
         albumGrid.setCellHeight(340);

@@ -43,7 +43,16 @@ public class Routing {
     }
 
     public void showImage(String id) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(AlbumViewController.class.getResource("imageView.fxml"));
+            loader.setController(new ImageViewController(beanManager, this, id));
+            Parent view = loader.load();
+            mainPane.getChildren().clear();
+            mainPane.getChildren().add(view);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
 import com.canoo.dolphin.server.Param;
+import com.canoo.dolphin.server.event.DolphinEventBus;
 import com.guigarage.photonia.controller.album.AlbumViewBean;
 import com.guigarage.photonia.controller.album.AlbumViewImageBean;
 import com.guigarage.photonia.folder.ImageFolder;
@@ -17,6 +18,8 @@ import java.io.IOException;
 @DolphinController("AlbumViewController")
 public class AlbumViewController extends AbstractController {
 
+    private final DolphinEventBus eventBus;
+
     private final BeanManager beanManager;
 
     private final PhotoniaService photoniaService;
@@ -28,10 +31,25 @@ public class AlbumViewController extends AbstractController {
     private ImageFolder folder;
 
     @Inject
-    public AlbumViewController(BeanManager beanManager, PhotoniaService photoniaService, AsyncService asyncService) {
+    public AlbumViewController(BeanManager beanManager, DolphinEventBus eventBus, PhotoniaService photoniaService, AsyncService asyncService) {
         this.beanManager = beanManager;
+        this.eventBus = eventBus;
         this.photoniaService = photoniaService;
         this.asyncService = asyncService;
+        eventBus.subscribe("image-refresh", e -> onImageUpdate(e.getData().toString()));
+    }
+
+    private void onImageUpdate(String id) {
+        if(bean != null) {
+            for(AlbumViewImageBean imageBean : bean.getImages()) {
+                if(id.equals(imageBean.getId().get())) {
+                    JpegImageFile imageFile = folder.findImageById(id);
+                    imageBean.getRating().set(imageFile.getRating());
+                    imageBean.getHasRaw().set(imageFile.getRawImageFile() != null);
+                    imageBean.getThumbnailUrl().set(photoniaService.getImageThumbnailUrl(id));
+                }
+            }
+        }
     }
 
     @DolphinAction("initView")

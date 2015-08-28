@@ -62,7 +62,7 @@ public class ImageFolder {
 
     public void synchWithFileSystem(AsyncService asyncService) throws IOException {
         for (RenderedImageFile imageFile : images) {
-            thumbnailCache.remove(imageFile);
+            thumbnailCache.removeThumbnail(imageFile);
         }
 
         images.clear();
@@ -86,7 +86,7 @@ public class ImageFolder {
 
     protected void delete(JpegImageFile imageFile) throws IOException {
         images.remove(imageFile);
-        thumbnailCache.remove(imageFile);
+        thumbnailCache.removeThumbnail(imageFile);
 
         for (File child : folderPath.toFile().listFiles()) {
             if (FilenameUtils.getBaseName(child.getName()).equals(FilenameUtils.getBaseName(imageFile.getName()))) {
@@ -133,7 +133,7 @@ public class ImageFolder {
         if (MetadataUtils.JPEG_FILE_TYPE.isMatching(child.getName())) {
             JpegImageFile imageFile = new JpegImageFile(this, child.getName());
             images.add(imageFile);
-            thumbnailCache.addOrUpdateAsync(imageFile, asyncService);
+            thumbnailCache.createAsync(imageFile, asyncService);
         }
     }
 
