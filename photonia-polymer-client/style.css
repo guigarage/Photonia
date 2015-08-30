@@ -1,0 +1,36 @@
+body {
+    font-family: 'Roboto', 'Noto', sans-serif;
+    margin: 0;
+}
+
+section {
+    padding: 20px 0;
+}
+
+section > div {
+    padding: 14px;
+    font-size: 16px;
+}
+
+.paper-toolbar {
+    background: orange;
+}
+
+.bordered-image {
+    border-color: orange;
+    border-style: solid;
+    border-width: 4px;
+    border-radius: 24px;
+}
+
+.card {
+    margin: 12px;
+}
+
+.card-holder {
+    margin: 24px;
+}
+
+.main-wrapper {
+    background: darkslategray;
+}
