@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.canoo.dolphin-platform</groupId>
             <artifactId>dolphin-platform-server</artifactId>
-            <version>0.0.3</version>
+            <version>${dolphin-platform.version}</version>
         </dependency>
         <dependency>
             <groupId>com.guigarage</groupId>

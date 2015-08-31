@@ -1,17 +1,14 @@
-package com.guigarage.photonia.spring;
+package com.guigarage.photonia;
 
+import com.canoo.dolphin.server.DolphinController;
 import com.canoo.dolphin.server.spring.DolphinPlatformSpringBootstrap;
-import com.guigarage.photonia.Album;
-import com.guigarage.photonia.service.AsyncService;
-import com.guigarage.photonia.service.PhotoniaService;
+import org.reflections.Reflections;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Import;
 
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
-import java.io.IOException;
+import java.util.Set;
 
 @SpringBootApplication
 @Import(DolphinPlatformSpringBootstrap.class)
@@ -21,15 +18,5 @@ public class PhotoniaApplication extends SpringBootServletInitializer {
         SpringApplication.run(new Class[]{PhotoniaApplication.class}, args);
     }
 
-    @Inject
-    private AsyncService asyncService;
-
-    @Inject
-    private PhotoniaService photoniaService;
-
-    @PostConstruct
-    public void bootstrap() {
-
-    }
 }
 

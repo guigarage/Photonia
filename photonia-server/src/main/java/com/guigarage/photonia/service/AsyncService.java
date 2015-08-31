@@ -1,6 +1,7 @@
 package com.guigarage.photonia.service;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
