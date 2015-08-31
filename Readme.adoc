@@ -1,0 +1,12 @@
+= Photonia
+:project-name: Photonia
+:branch: master
+
+image:http://img.shields.io/travis/guigarage/{project-name}/{branch}.svg["Build Status", link="https://travis-ci.org/guigarage/{project-name}"]
+image:http://img.shields.io/coveralls/guigarage/{project-name}/{branch}.svg["Coverage Status", link="https://coveralls.io/r/guigarage/{project-name}"]
+
+
+== Summary
+
+Photonia is a application to manage your photo collection.
+

@@ -1,0 +1,5 @@
+
+description = ''
+dependencies {
+    compile group: 'com.canoo.dolphin-platform', name: 'dolphin-platform-core', version:'0.0.3'
+}

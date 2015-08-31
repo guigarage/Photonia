@@ -1,0 +1,12 @@
+rootProject.name = 'photonia'
+include ':photonia-server'
+include ':photonia-polymer-client'
+include ':photonia-model'
+include ':photonia-javafx-client'
+include ':photonia-server-spring'
+
+project(':photonia-server').projectDir = "$rootDir/photonia-server" as File
+project(':photonia-polymer-client').projectDir = "$rootDir/photonia-polymer-client" as File
+project(':photonia-model').projectDir = "$rootDir/photonia-model" as File
+project(':photonia-javafx-client').projectDir = "$rootDir/photonia-javafx-client" as File
+project(':photonia-server-spring').projectDir = "$rootDir/photonia-server-spring" as File

@@ -1,0 +1,6 @@
+
+description = ''
+dependencies {
+    compile group: 'com.canoo.dolphin-platform', name: 'dolphin-platform-server-spring', version:'0.0.3'
+  compile project(':photonia-server')
+}
