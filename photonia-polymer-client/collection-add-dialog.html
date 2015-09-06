@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="import" href="bower_components/paper-dialog/paper-dialog.html">
+    <link rel="import" href="bower_components/paper-button/paper-button.html">
+</head>
+
+<dom-module id="add-dialog">
+    <style>
+    </style>
+
+    <template>
+        <paper-dialog>
+            <h2>Header</h2>
+            <div>Dialog body</div>
+            <div class="buttons">
+                <paper-button dialog-dismiss>Cancel</paper-button>
+                <paper-button dialog-confirm>Accept</paper-button>
+            </div>
+        </paper-dialog>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "add-dialog"
+    });
+</script>
