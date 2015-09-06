@@ -1,13 +1,6 @@
-<!doctype html>
-<html lang="">
-
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="utf-8">
-    <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
-    <link rel="import" href="bower_components/paper-styles/paper-styles.html">
-    <link rel="import" href="bower_components/iron-image/iron-image.html">
-    <link rel="import" href="bower_components/font-roboto/roboto.html">
-    <link rel="import" href="bower_components/paper-card/paper-card.html">
     <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
     <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
@@ -17,114 +10,106 @@
     <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html">
     <link rel="import" href="bower_components/paper-menu/paper-menu.html">
     <link rel="import" href="bower_components/paper-item/paper-item.html">
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="import" href="collection-card.html">
 </head>
 
-<body unresolved class="fullbleed">
-<paper-header-panel class="main-wrapper">
+<dom-module id="collection-view">
+    <style>
+        .paper-toolbar {
+            background: orange;
+        }
 
-    <paper-toolbar class="medium-tall">
-        <span class="title">Photonia</span>
-        <paper-slider min="64" max="400" value="360"></paper-slider>
-        <paper-menu-button>
-            <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
-            <paper-menu class="dropdown-content">
-                <paper-item>Neues Album</paper-item>
-            </paper-menu>
-        </paper-menu-button>
-    </paper-toolbar>
+        .card-holder {
+            margin: 24px;
+        }
 
-    <div class="card-holder horizontal layout center-justified wrap">
+        .main-wrapper {
+            background: darkslategray;
+        }
+    </style>
 
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
+    <template>
+        <paper-header-panel class="main-wrapper">
+
+            <paper-toolbar class="medium-tall">
+                <span class="title">Photonia</span>
+                <paper-slider min="160" max="400"
+                              on-immediate-value-change="eventCallback"></paper-slider>
+                <paper-menu-button>
+                    <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+                    <paper-menu class="dropdown-content">
+                        <paper-item>Neues Album</paper-item>
+                    </paper-menu>
+                </paper-menu-button>
+            </paper-toolbar>
+
+            <div class="card-holder horizontal layout center-justified wrap">
+
+                <template id="tasks" is="dom-repeat" items="{{collections}}">
+                    <collection-card class=".collection-card" image-width={{imageWidth}}
+                                     image-height={{imageHeight}}></collection-card>
+                </template>
+
             </div>
-        </paper-card>
+        </paper-header-panel>
+    </template>
+</dom-module>
 
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-        <paper-card heading="New York 2015" class="card">
-            <div class="card-content">
-                <iron-image style="width:280px; height:240px;" sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
-            </div>
-        </paper-card>
-
-    </div>
-</paper-header-panel>
-
-</body>
-
-</html>
-
-
+<script>
+    Polymer({
+        is: "collection-view",
+        properties: {
+            client: Object,
+            collections: {
+                type: Array,
+                value: [
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                    {},
+                ]
+            },
+            imageWidth: {
+                type: Number,
+                value: 280
+            },
+            imageHeight: {
+                type: Number,
+                value: 240
+            }
+        },
+        eventCallback: function (e) {
+            this.imageWidth = e.target.immediateValue;
+            this.imageHeight = (e.target.immediateValue / 28.0) * 24.0;
+            console.log("ImageWidth:" + e.target.immediateValue);
+        }
+    });
+</script>

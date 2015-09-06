@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="import" href="bower_components/iron-image/iron-image.html">
+    <link rel="import" href="bower_components/paper-card/paper-card.html">
+</head>
+
+<dom-module id="collection-card">
+    <style>
+        .card {
+            margin: 12px;
+        }
+    </style>
+
+    <template>
+        <paper-card heading="New York 2015" class="card">
+            <div class="card-content">
+                <iron-image width={{imageWidth}} height={{imageHeight}} sizing="cover"
+                            src="http://lorempixel.com/800/800"></iron-image>
+            </div>
+        </paper-card>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "collection-card",
+        properties: {
+            imageWidth: {
+                type: Number,
+                notify: true,
+                value: 280
+            },
+            imageHeight: {
+                type: Number,
+                notify: true,
+                value: 240
+            },
+            client: Object,
+            collection: Object
+        },
+        eventCallback: function(e){
+        },
+        eventCallback2: function(e){
+        }
+    });
+</script>
