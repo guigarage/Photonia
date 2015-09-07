@@ -8,15 +8,16 @@ import com.guigarage.photonia.controller.library.LibraryViewBean;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import org.controlsfx.control.GridView;
 
 public class AlbumViewController {
 
     @FXML
-    private Label titleLabel;
+    private Label albumNameLabel;
 
     @FXML
-    private GridView<AlbumViewImageBean> imageGrid;
+    private ListView<AlbumViewImageBean> imageList;
 
     @FXML
     private Button backButton;
@@ -35,16 +36,14 @@ public class AlbumViewController {
 
     @FXML
     public void initialize() {
-        imageGrid.setCellFactory(e -> new ImageCell(id -> routing.showImage(id)));
-        imageGrid.setCellHeight(340);
-        imageGrid.setCellWidth(340);
+        imageList.setCellFactory(e -> new ImageCell(id -> routing.showImage(id)));
         backButton.setOnAction(e -> routing.showLibrary());
     }
 
     private void update(AlbumViewBean bean) {
-        titleLabel.textProperty().bind(FXBinder.wrapStringProperty(bean.getName()));
+        albumNameLabel.textProperty().bind(FXBinder.wrapStringProperty(bean.getName()));
         if (bean != null) {
-            imageGrid.setItems(FXBinder.wrapList(bean.getImages()));
+            imageList.setItems(FXBinder.wrapList(bean.getImages()));
         }
     }
 

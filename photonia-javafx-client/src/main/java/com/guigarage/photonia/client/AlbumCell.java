@@ -2,25 +2,22 @@ package com.guigarage.photonia.client;
 
 import com.canoo.dolphin.client.javafx.FXBinder;
 import com.guigarage.photonia.controller.library.LibraryViewAlbumBean;
+import javafx.scene.control.ListCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-import org.controlsfx.control.GridCell;
 
 import java.util.function.Consumer;
 
-public class AlbumCell extends GridCell<LibraryViewAlbumBean> {
+public class AlbumCell extends ListCell<LibraryViewAlbumBean> {
 
     private ImageView imageView;
-
 
     public AlbumCell(Consumer<String> openAlbumHandler) {
         this.imageView = new ImageView();
 
         imageView.setPreserveRatio(true);
-        //imageView.fitWidthProperty().bind(widthProperty());
-        //imageView.fitHeightProperty().bind(heightProperty());
-        setStyle("-fx-border-width: 2; -fx-border-color: red");
+        imageView.setFitHeight(128);
 
         Rectangle clip = new Rectangle();
         clip.setX(0);
@@ -31,7 +28,11 @@ public class AlbumCell extends GridCell<LibraryViewAlbumBean> {
 
         setGraphic(imageView);
 
-        setOnMouseClicked(e -> openAlbumHandler.accept(getItem().getId().get()));
+        setOnMouseClicked(e -> {
+            if(e.getClickCount() > 1) {
+                openAlbumHandler.accept(getItem().getId().get());
+            }
+        });
     }
 
     @Override
@@ -42,11 +43,9 @@ public class AlbumCell extends GridCell<LibraryViewAlbumBean> {
         textProperty().unbind();
         setText("");
 
-        if(item != null) {
-            String name = item.getName().get();
-            System.out.println(name);
-            //textProperty().bind(FXBinder.wrapStringProperty();
-            if(item.getCoverUrl().get() != null) {
+        if (item != null) {
+            textProperty().bind(FXBinder.wrapStringProperty(item.getName()));
+            if (item.getCoverUrl().get() != null) {
                 imageView.setImage(new Image(item.getCoverUrl().get()));
             }
         }

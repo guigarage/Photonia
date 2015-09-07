@@ -5,12 +5,17 @@ import com.canoo.dolphin.client.javafx.FXBinder;
 import com.guigarage.photonia.controller.library.LibraryViewAlbumBean;
 import com.guigarage.photonia.controller.library.LibraryViewBean;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import org.controlsfx.control.GridView;
 
 public class LibraryViewController {
 
     @FXML
-    private GridView<LibraryViewAlbumBean> albumGrid;
+    private Button newAlbumButton;
+
+    @FXML
+    private ListView<LibraryViewAlbumBean> albumList;
 
     private final ClientBeanManager beanManager;
 
@@ -26,15 +31,13 @@ public class LibraryViewController {
 
     @FXML
     public void initialize() {
-        albumGrid.setCellFactory(e -> new AlbumCell(id -> routing.showAlbum(id)));
-        albumGrid.setCellHeight(340);
-        albumGrid.setCellWidth(340);
+       albumList.setCellFactory(c -> new AlbumCell(s -> routing.showAlbum(s)));
     }
 
     private void update(LibraryViewBean libraryViewBean) {
-        albumGrid.setItems(null);
+        albumList.setItems(null);
         if (libraryViewBean != null) {
-            albumGrid.setItems(FXBinder.wrapList(libraryViewBean.getAlbums()));
+            albumList.setItems(FXBinder.wrapList(libraryViewBean.getAlbums()));
         }
     }
 }
