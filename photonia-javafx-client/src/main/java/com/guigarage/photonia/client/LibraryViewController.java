@@ -1,15 +1,16 @@
 package com.guigarage.photonia.client;
 
-import com.canoo.dolphin.client.ClientBeanManager;
+import com.canoo.dolphin.client.AbstractViewController;
+import com.canoo.dolphin.client.ClientContext;
+import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.client.javafx.FXBinder;
 import com.guigarage.photonia.controller.library.LibraryViewAlbumBean;
 import com.guigarage.photonia.controller.library.LibraryViewBean;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import org.controlsfx.control.GridView;
 
-public class LibraryViewController {
+public class LibraryViewController extends AbstractViewController<LibraryViewBean> {
 
     @FXML
     private Button newAlbumButton;
@@ -17,27 +18,21 @@ public class LibraryViewController {
     @FXML
     private ListView<LibraryViewAlbumBean> albumList;
 
-    private final ClientBeanManager beanManager;
-
     private final Routing routing;
 
-    public LibraryViewController(ClientBeanManager beanManager, Routing routing) {
-        this.beanManager = beanManager;
+    public LibraryViewController(ClientContext clientContext, Routing routing) {
+        super(clientContext, "LibraryViewController");
         this.routing = routing;
-
-        beanManager.onAdded(LibraryViewBean.class, bean -> update(bean));
-        beanManager.send("LibraryViewController:initView");
     }
 
     @FXML
     public void initialize() {
-       albumList.setCellFactory(c -> new AlbumCell(s -> routing.showAlbum(s)));
+        albumList.setCellFactory(c -> new AlbumCell(s -> routing.showAlbum(s)));
     }
 
-    private void update(LibraryViewBean libraryViewBean) {
-        albumList.setItems(null);
-        if (libraryViewBean != null) {
-            albumList.setItems(FXBinder.wrapList(libraryViewBean.getAlbums()));
-        }
+    @Override
+    protected void init(ControllerProxy<LibraryViewBean> controller) {
+        LibraryViewBean model = controller.getModel();
+        albumList.setItems(FXBinder.wrapList(model.getAlbums()));
     }
 }

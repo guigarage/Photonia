@@ -3,20 +3,23 @@ package com.guigarage.photonia.controller;
 import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
+import com.canoo.dolphin.server.DolphinModel;
 import com.guigarage.photonia.controller.library.LibraryViewAlbumBean;
 import com.guigarage.photonia.controller.library.LibraryViewBean;
 import com.guigarage.photonia.folder.ImageFolder;
 import com.guigarage.photonia.service.PhotoniaService;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 @DolphinController("LibraryViewController")
-public class LibraryViewController extends AbstractController {
+public class LibraryViewController extends AbstractController implements AlbumObserver {
 
     private final BeanManager beanManager;
 
     private final PhotoniaService photoniaService;
 
+    @DolphinModel
     private LibraryViewBean bean;
 
     @Inject
@@ -25,16 +28,8 @@ public class LibraryViewController extends AbstractController {
         this.photoniaService = photoniaService;
     }
 
-    @DolphinAction("initView")
-    public void onInitView() {
-        bean = beanManager.create(LibraryViewBean.class);
-        updateBean();
-    }
-
+    @PostConstruct
     private void updateBean() {
-        bean.getAlbums().clear();
-        beanManager.removeAll(LibraryViewAlbumBean.class);
-
         for (ImageFolder folder : photoniaService.getAlbum().getFolders()) {
             LibraryViewAlbumBean folderBean = beanManager.create(LibraryViewAlbumBean.class);
             folderBean.getId().set(folder.getUuid());
@@ -47,8 +42,12 @@ public class LibraryViewController extends AbstractController {
         }
     }
 
-    @DolphinAction("destroyView")
-    public void onDestroyView() {
-        beanManager.remove(bean);
+    @Override
+    public void albumChanged(String id) {
+        for(LibraryViewAlbumBean albumBean : bean.getAlbums()) {
+            if(albumBean.getId().equals(id)) {
+                //TODO: Update Name etc.
+            }
+        }
     }
 }

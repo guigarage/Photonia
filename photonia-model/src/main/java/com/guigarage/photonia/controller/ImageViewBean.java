@@ -32,55 +32,59 @@ public class ImageViewBean {
 
     private Property<String> imageUrl;
 
-    public Property<String> getImageUrl() {
+    public Property<String> imageUrlProperty() {
         return imageUrl;
     }
 
-    public Property<Integer> getRating() {
+    public Property<Integer> ratingProperty() {
         return rating;
     }
 
-    public Property<String> getId() {
+    public Property<String> idProperty() {
         return id;
     }
 
-    public Property<String> getIso() {
+    public String getId() {
+        return id.get();
+    }
+
+    public Property<String> isoProperty() {
         return iso;
     }
 
-    public Property<String> getLastModified() {
+    public Property<String> lastModifiedProperty() {
         return lastModified;
     }
 
-    public Property<String> getLens() {
+    public Property<String> lensProperty() {
         return lens;
     }
 
-    public Property<String> getFocalLength() {
+    public Property<String> focalLengthProperty() {
         return focalLength;
     }
 
-    public Property<String> getExposureTime() {
+    public Property<String> exposureTimeProperty() {
         return exposureTime;
     }
 
-    public Property<String> getNextId() {
+    public Property<String> nextIdProperty() {
         return nextId;
     }
 
-    public Property<String> getPrevId() {
+    public Property<String> prevIdProperty() {
         return prevId;
     }
 
-    public Property<String> getFolderName() {
+    public Property<String> folderNameProperty() {
         return folderName;
     }
 
-    public Property<String> getfNumber() {
+    public Property<String> fNumberProperty() {
         return fNumber;
     }
 
-    public Property<Boolean> getHasRaw() {
+    public Property<Boolean> hasRawProperty() {
         return hasRaw;
     }
 }

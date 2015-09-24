@@ -1,17 +1,15 @@
 package com.guigarage.photonia.client;
 
-import com.canoo.dolphin.client.ClientBeanManager;
+import com.canoo.dolphin.client.*;
 import com.canoo.dolphin.client.javafx.FXBinder;
 import com.guigarage.photonia.controller.album.AlbumViewBean;
 import com.guigarage.photonia.controller.album.AlbumViewImageBean;
-import com.guigarage.photonia.controller.library.LibraryViewBean;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import org.controlsfx.control.GridView;
 
-public class AlbumViewController {
+public class AlbumViewController extends AbstractViewController<AlbumViewBean> {
 
     @FXML
     private Label albumNameLabel;
@@ -22,16 +20,14 @@ public class AlbumViewController {
     @FXML
     private Button backButton;
 
-    private final ClientBeanManager beanManager;
+    private String id;
 
     private final Routing routing;
 
-    public AlbumViewController(ClientBeanManager beanManager, Routing routing, String id) {
-        this.beanManager = beanManager;
+    public AlbumViewController(ClientContext clientContext, Routing routing, String id) {
+        super(clientContext, "AlbumViewController");
         this.routing = routing;
-
-        beanManager.onAdded(AlbumViewBean.class, bean -> update(bean));
-        beanManager.send("AlbumViewController:initView", new ClientBeanManager.Param("id", id));
+        this.id = id;
     }
 
     @FXML
@@ -40,11 +36,11 @@ public class AlbumViewController {
         backButton.setOnAction(e -> routing.showLibrary());
     }
 
-    private void update(AlbumViewBean bean) {
-        albumNameLabel.textProperty().bind(FXBinder.wrapStringProperty(bean.getName()));
-        if (bean != null) {
-            imageList.setItems(FXBinder.wrapList(bean.getImages()));
-        }
+    @Override
+    protected void init(ControllerProxy<AlbumViewBean> controller) {
+        AlbumViewBean model = controller.getModel();
+        model.idProperty().set(id);
+        FXBinder.bindBidirectional(albumNameLabel.textProperty(), model.nameProperty());
+        imageList.setItems(FXBinder.wrapList(model.imagesProperty()));
     }
-
 }

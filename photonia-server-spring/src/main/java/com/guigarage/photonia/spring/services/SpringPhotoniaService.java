@@ -25,13 +25,13 @@ public class SpringPhotoniaService implements PhotoniaService {
     @Inject
     private AsyncService asyncService;
 
-    @Inject
-    private DolphinEventBus eventBus;
+   // @Inject
+   // private DolphinEventBus eventBus;
 
     @PostConstruct
     public void init() {
         try {
-            thumbnailCache = new ThumbnailCache(new File("/Users/hendrikebbers/Desktop/photonia/thumbnails"), 400, id -> eventBus.publish("image-refresh", id));
+            thumbnailCache = new ThumbnailCache(new File("/Users/hendrikebbers/Desktop/photonia/thumbnails"), 400, id -> System.out.println(""));
             myAlbum = new Album("/Users/hendrikebbers/Desktop/photonia/album", thumbnailCache, asyncService);
             trashFolder = new TrashFolder("/Users/hendrikebbers/Desktop/photonia/trash", asyncService, thumbnailCache);
         } catch (IOException e) {

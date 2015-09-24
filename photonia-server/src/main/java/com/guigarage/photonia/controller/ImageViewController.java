@@ -3,20 +3,22 @@ package com.guigarage.photonia.controller;
 import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
-import com.canoo.dolphin.server.Param;
+import com.canoo.dolphin.server.DolphinModel;
 import com.guigarage.photonia.service.PhotoniaService;
 import com.guigarage.photonia.types.JpegImageFile;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 @DolphinController("ImageViewController")
-public class ImageViewController extends AbstractController {
+public class ImageViewController extends AbstractController implements ImageObserver {
 
     private final BeanManager beanManager;
 
     private final PhotoniaService photoniaService;
 
-    private ImageViewBean bean;
+    @DolphinModel
+    private ImageViewBean model;
 
     private JpegImageFile imageFile;
 
@@ -26,13 +28,12 @@ public class ImageViewController extends AbstractController {
         this.photoniaService = photoniaService;
     }
 
-    @DolphinAction("initView")
-    public void onInitView(@Param("id") String imageId) {
-        bean = beanManager.create(ImageViewBean.class);
-        bean.getRating().onChanged(e -> {
+    @PostConstruct
+    public void init() {
+        model.ratingProperty().onChanged(e -> {
             try {
-                if (bean.getRating().get() != null) {
-                    imageFile.setRating(bean.getRating().get().intValue());
+                if (model.ratingProperty().get() != null) {
+                    imageFile.setRating(model.ratingProperty().get().intValue());
                 } else {
                     imageFile.setRating(0);
                 }
@@ -40,34 +41,32 @@ public class ImageViewController extends AbstractController {
                 showError("Rating kann nicht gesetzt werden!", exception);
             }
         });
-        updateBeanByImageId(imageId);
-    }
 
-    private void updateBeanByImageId(String imageId) {
-        imageFile = photoniaService.getAlbum().getImageFileById(imageId);
-        bean.getRating().set(imageFile.getRating());
-        bean.getExposureTime().set(imageFile.getExposureTime());
-        bean.getfNumber().set(imageFile.getfNumber());
-        bean.getFocalLength().set(imageFile.getFocalLength());
-        bean.getFolderName().set(imageFile.getParentImageFolder().getName());
-        bean.getHasRaw().set(imageFile.getRawImageFile() != null);
-        bean.getId().set(imageFile.getUuid());
-        bean.getIso().set(imageFile.getIso());
-        bean.getLastModified().set(imageFile.getLastModified());
-        bean.getLens().set(imageFile.getLens());
-        bean.getImageUrl().set(photoniaService.getImageUrl(imageFile.getUuid()));
-        bean.getNextId().set(imageFile.getParentImageFolder().getNext(imageFile).getUuid());
-        bean.getPrevId().set(imageFile.getParentImageFolder().getPrev(imageFile).getUuid());
+        model.idProperty().onChanged(e -> {
+            imageFile = photoniaService.getAlbum().getImageFileById(model.getId());
+            model.ratingProperty().set(imageFile.getRating());
+            model.exposureTimeProperty().set(imageFile.getExposureTime());
+            model.fNumberProperty().set(imageFile.getfNumber());
+            model.focalLengthProperty().set(imageFile.getFocalLength());
+            model.folderNameProperty().set(imageFile.getParentImageFolder().getName());
+            model.hasRawProperty().set(imageFile.getRawImageFile() != null);
+            model.isoProperty().set(imageFile.getIso());
+            model.lastModifiedProperty().set(imageFile.getLastModified());
+            model.lensProperty().set(imageFile.getLens());
+            model.imageUrlProperty().set(photoniaService.getImageUrl(imageFile.getUuid()));
+            model.nextIdProperty().set(imageFile.getParentImageFolder().getNext(imageFile).getUuid());
+            model.prevIdProperty().set(imageFile.getParentImageFolder().getPrev(imageFile).getUuid());
+        });
     }
 
     @DolphinAction("showNext")
     public void onShowNext() {
-        updateBeanByImageId(bean.getNextId().get());
+        model.idProperty().set(model.nextIdProperty().get());
     }
 
     @DolphinAction("showPrev")
     public void onShowPrev() {
-        updateBeanByImageId(bean.getPrevId().get());
+        model.idProperty().set(model.prevIdProperty().get());
     }
 
     @DolphinAction("backToFolder")
@@ -80,8 +79,10 @@ public class ImageViewController extends AbstractController {
         throw new RuntimeException("Not Implemented");
     }
 
-    @DolphinAction("destroyView")
-    public void onDestroyView() {
-        beanManager.remove(bean);
+    @Override
+    public void imageChanged(String id) {
+        if(model.idProperty().equals(id)) {
+            //TODO: Update Image
+        }
     }
 }
