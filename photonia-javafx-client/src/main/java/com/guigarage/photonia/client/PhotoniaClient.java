@@ -20,7 +20,9 @@ public class PhotoniaClient extends Application {
         clientFuture.thenAccept(client -> {
             Routing routing = new Routing(mainPane, client);
             routing.showLibrary();
-            primaryStage.setScene(new Scene(mainPane));
+            Scene scene = new Scene(mainPane);
+            scene.getStylesheets().add(PhotoniaClient.class.getResource("style.css").toExternalForm());
+            primaryStage.setScene(scene);
             primaryStage.show();
         });
     }

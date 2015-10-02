@@ -28,8 +28,6 @@ public class ImageViewBean {
 
     private Property<String> fNumber;
 
-    private Property<Boolean> hasRaw;
-
     private Property<String> imageUrl;
 
     public Property<String> imageUrlProperty() {
@@ -84,7 +82,4 @@ public class ImageViewBean {
         return fNumber;
     }
 
-    public Property<Boolean> hasRawProperty() {
-        return hasRaw;
-    }
 }

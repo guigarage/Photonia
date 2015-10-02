@@ -1,10 +1,10 @@
 package com.guigarage.photonia.v2;
 
 import com.guigarage.photonia.service.AsyncService;
-import com.guigarage.photonia.types.RenderedImageFile;
 import com.guigarage.photonia.util.Locker;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -45,54 +45,66 @@ public class PhotoniaThumbnailCache {
         thumbsMapLocker = new Locker();
         tasksMapLock = new Locker();
 
-        //TODO:Read data from mapping file
 
+        for (File albumThumbFolder : thumbFolder.listFiles()) {
+            if (albumThumbFolder.isDirectory()) {
+                for (File thumb : albumThumbFolder.listFiles()) {
+                    if (FilenameUtils.getExtension(thumb.getName()).trim().equalsIgnoreCase("jpg")) {
+                        thumbs.put(FilenameUtils.getBaseName(thumb.getName()), thumb);
+                    }
+                }
+            }
+        }
     }
 
-    public Future<Void> createThumbnail(PhotoniaImage imageFile, AsyncService asyncService) {
+    public Future<Void> createThumbnail(ImageMetadata imageMetadata, AsyncService asyncService) {
         Future<Void> task = asyncService.run(() -> {
             try {
-                createThumbnail(imageFile);
+                createThumbnailImpl(imageMetadata);
             } catch (IOException e) {
                 throw new RuntimeException("Error while loading thumbnail", e);
             }
         }, f -> {
-            tasksMapLock.runLocked(() -> tasks.remove(imageFile.getImageMetadata().getUuid()));
-            onThumbCreatedIdConsumer.accept(imageFile.getImageMetadata().getUuid());
+            tasksMapLock.runLocked(() -> tasks.remove(imageMetadata.getUuid()));
+            onThumbCreatedIdConsumer.accept(imageMetadata.getUuid());
         });
         tasksMapLock.runLocked(() -> {
             if (!task.isDone()) {
-                tasks.put(imageFile.getImageMetadata().getUuid(), task);
+                tasks.put(imageMetadata.getUuid(), task);
             }
         });
         return task;
     }
 
-    public BufferedImage getThumbnail(PhotoniaImage imageFile) throws Exception {
-        File thumbFile = thumbsMapLocker.callLocked(() -> thumbs.get(imageFile.getImageMetadata().getUuid()));
+    public BufferedImage getThumbnail(String imageId) throws Exception {
+        File thumbFile = thumbsMapLocker.callLocked(() -> thumbs.get(imageId));
         if (thumbFile != null) {
             return ImageIO.read(thumbFile);
         }
         return null;
     }
 
-    public void removeThumbnail(PhotoniaImage imageFile) throws IOException {
-        File toDelete = thumbsMapLocker.callLocked(() -> thumbs.remove(imageFile.getImageMetadata().getUuid()));
+    public void removeThumbnail(ImageMetadata imageMetadata) throws IOException {
+        File toDelete = thumbsMapLocker.callLocked(() -> thumbs.remove(imageMetadata.getUuid()));
         if (toDelete != null) {
             FileUtils.forceDelete(toDelete);
         }
     }
 
-    private void createThumbnail(PhotoniaImage imageFile) throws IOException {
-        removeThumbnail(imageFile);
-        BufferedImage thumbnail = Thumbnails.of(imageFile.toLocalFile()).width(thumbSize).asBufferedImage();
+    private void createThumbnailImpl(ImageMetadata imageMetadata) throws IOException {
+        removeThumbnail(imageMetadata);
+        BufferedImage thumbnail = Thumbnails.of(imageMetadata.toLocalFile()).width(thumbSize).asBufferedImage();
 
-        File thumbFolderFile = new File(thumbFolder, imageFile.getFolder().getLocalFolder().getName());
+        File thumbFolderFile = new File(thumbFolder, imageMetadata.getFolderMetadata().getLocalFolder().getName());
         if (!thumbFolderFile.exists()) {
             thumbFolderFile.mkdirs();
         }
-        File thumbFile = new File(thumbFolderFile, imageFile.getImageMetadata().getUuid() + ".jpg");
+        File thumbFile = new File(thumbFolderFile, imageMetadata.getUuid() + ".jpg");
         ImageIO.write(thumbnail, "JPG", thumbFile);
-        thumbsMapLocker.runLocked(() -> thumbs.put(imageFile.getImageMetadata().getUuid(), thumbFile));
+        thumbsMapLocker.runLocked(() -> thumbs.put(imageMetadata.getUuid(), thumbFile));
+    }
+
+    public boolean containsThumbnail(ImageMetadata imageMetadata) {
+        return thumbsMapLocker.callLocked(() -> thumbs.containsKey(imageMetadata.getUuid()));
     }
 }

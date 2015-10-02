@@ -1,14 +1,10 @@
-package com.guigarage.photonia;
+package com.guigarage.photonia.v2;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
-import com.guigarage.photonia.types.JpegFileType;
-import com.guigarage.photonia.types.JpegImageFile;
-import com.guigarage.photonia.types.NefFileType;
-import com.guigarage.photonia.types.RawImageFile;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
@@ -19,18 +15,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class MetadataUtils {
-
-    public static final JpegFileType JPEG_FILE_TYPE = new JpegFileType();
-
-    public static boolean hasRaw(JpegImageFile jpegImageFile) {
-        File folder = jpegImageFile.getParentFolder().toFile();
-        for (File file : folder.listFiles()) {
-            if (file.getName().toLowerCase().equals(jpegImageFile.getFileNameWithoutExtension() + ".nef".toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public static void printAll(Metadata metadata) {
         for (Directory directory : metadata.getDirectories()) {
@@ -76,18 +60,6 @@ public class MetadataUtils {
 
     public static void setIntegerValue(Directory directory, int tagId, int value) {
         directory.setInt(tagId, value);
-    }
-
-    public static RawImageFile getRawForImage(Path parentFolder, String name) {
-        //TODO: change to SPI (RawFileType)
-        NefFileType nefFileType = new NefFileType();
-
-        for (File file : parentFolder.toFile().listFiles()) {
-            if (FilenameUtils.getBaseName(file.getName()).equals(FilenameUtils.getBaseName(name)) && FilenameUtils.isExtension(file.getName(), toCollection(nefFileType.getAllowedExtensions()))) {
-                return nefFileType.getRawImageFile(parentFolder, file.getName());
-            }
-        }
-        return null;
     }
 
     public static <E> Collection<E> toCollection(Iterable<E> iterable) {

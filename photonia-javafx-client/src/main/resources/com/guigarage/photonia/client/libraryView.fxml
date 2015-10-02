@@ -5,15 +5,15 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-
 <VBox prefHeight="200.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <ToolBar maxWidth="1.7976931348623157E308">
+<children>
+    <ToolBar maxWidth="1.7976931348623157E308">
         <items>
             <Label text="Photonia" />
-          <Button fx:id="newAlbumButton" mnemonicParsing="false" text="new album" />
+            <Button fx:id="newAlbumButton" mnemonicParsing="false" text="new album" />
+            <Slider fx:id="imageSizeSlider" />
         </items>
-      </ToolBar>
-      <ListView fx:id="albumList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
-   </children>
+    </ToolBar>
+    <GridView fx:id="albumGrid" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS" />
+</children>
 </VBox>

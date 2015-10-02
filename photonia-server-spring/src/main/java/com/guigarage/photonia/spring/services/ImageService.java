@@ -1,9 +1,7 @@
 package com.guigarage.photonia.spring.services;
 
-import com.guigarage.photonia.Album;
 import com.guigarage.photonia.service.PhotoniaService;
-import com.guigarage.photonia.types.JpegImageFile;
-import org.apache.commons.io.FileUtils;
+import com.guigarage.photonia.v2.ImageMetadata;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,10 +21,10 @@ public class ImageService {
     @ResponseBody
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getImage(@PathVariable String id) throws Exception {
-        Album album = photoniaService.getAlbum();
-        JpegImageFile imageFile = album.getImageFileById(id);
-        if (imageFile != null) {
-            return FileUtils.readFileToByteArray(imageFile.toFile());
+        ImageMetadata imageMetadata = photoniaService.getImageById(id);
+        if (imageMetadata != null) {
+            throw new RuntimeException("I need the folder :(");
+            //return FileUtils.readFileToByteArray(imageMetadata.getFileName());
         } else {
             throw new IllegalArgumentException("Can't find image with id " + id);
         }

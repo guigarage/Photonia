@@ -4,22 +4,19 @@ import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
 import com.canoo.dolphin.server.DolphinModel;
-import com.canoo.dolphin.server.Param;
 import com.canoo.dolphin.server.event.DolphinEventBus;
-import com.canoo.dolphin.server.event.TaskExecutor;
 import com.guigarage.photonia.controller.album.AlbumViewBean;
 import com.guigarage.photonia.controller.album.AlbumViewImageBean;
-import com.guigarage.photonia.folder.ImageFolder;
 import com.guigarage.photonia.service.AsyncService;
 import com.guigarage.photonia.service.PhotoniaService;
-import com.guigarage.photonia.types.JpegImageFile;
+import com.guigarage.photonia.v2.ImageMetadata;
+import com.guigarage.photonia.v2.PhotoniaAlbum;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.IOException;
 
 @DolphinController("AlbumViewController")
-public class AlbumViewController extends AbstractController implements AlbumObserver, ImageObserver{
+public class AlbumViewController extends AbstractController implements AlbumObserver, ImageObserver {
 
     private final DolphinEventBus eventBus;
 
@@ -32,7 +29,7 @@ public class AlbumViewController extends AbstractController implements AlbumObse
     @DolphinModel
     private AlbumViewBean model;
 
-    private ImageFolder folder;
+    private PhotoniaAlbum album;
 
     @Inject
     public AlbumViewController(BeanManager beanManager, DolphinEventBus eventBus, PhotoniaService photoniaService, AsyncService asyncService) {
@@ -45,20 +42,23 @@ public class AlbumViewController extends AbstractController implements AlbumObse
     @PostConstruct
     public void init() {
         model.idProperty().onChanged(e -> {
-            folder = photoniaService.getAlbum().getFolderById(model.getId());
-            model.selectedImageIdProperty().set(null);
-            model.nameProperty().set(folder.getName());
-            model.imagesProperty().clear();
-            beanManager.removeAll(AlbumViewImageBean.class);
-            for (JpegImageFile imageFile : folder.getImages()) {
-                AlbumViewImageBean imageBean = beanManager.create(AlbumViewImageBean.class);
-                imageBean.getId().set(imageFile.getUuid());
-                imageBean.getHasRaw().set(imageFile.getRawImageFile() != null);
-                imageBean.getRating().set(imageFile.getRating());
-                imageBean.getThumbnailUrl().set(photoniaService.getImageThumbnailUrl(imageFile.getUuid()));
-                model.imagesProperty().add(imageBean);
-            }
+            update();
         });
+    }
+
+    private void update() {
+        this.album = photoniaService.getAlbumById(model.getId());
+        model.selectedImageIdProperty().set(null);
+        model.nameProperty().set(album.getMetadata().getFolderName());
+        model.imagesProperty().clear();
+        beanManager.removeAll(AlbumViewImageBean.class);
+        for (ImageMetadata imageFile : album.getMetadata().getImages()) {
+            AlbumViewImageBean imageBean = beanManager.create(AlbumViewImageBean.class);
+            imageBean.getId().set(imageFile.getUuid());
+            imageBean.getRating().set(imageFile.getRating());
+            imageBean.getThumbnailUrl().set(photoniaService.getImageThumbnailUrl(imageFile.getUuid()));
+            model.imagesProperty().add(imageBean);
+        }
     }
 
     @DolphinAction("backToAlbum")
@@ -68,25 +68,27 @@ public class AlbumViewController extends AbstractController implements AlbumObse
 
     @DolphinAction("deleteSelected")
     public void onDeleteSelected() {
-        try {
-            folder.moveToTrash(folder.findImageById(model.getSelectedImageId()), asyncService, photoniaService);
-        } catch (IOException e) {
-            showError("Can't move image", e);
-        }
+        throw new RuntimeException("Not Implemented");
     }
 
     @Override
     public void albumChanged(String id) {
-        if(folder.getUuid().equals(id)) {
-            //TODO: Update Name etc.
+        if (model.getId().equals(id)) {
+            update();
         }
     }
 
     @Override
     public void imageChanged(String id) {
-        for(AlbumViewImageBean imageBean : model.imagesProperty()) {
-            if(imageBean.getId().get().equals(id)) {
-                //TODO: Update Image Data
+        for (AlbumViewImageBean imageBean : model.imagesProperty()) {
+            if (imageBean.getId().get().equals(id)) {
+                for (ImageMetadata imageMetadata : album.getMetadata().getImages()) {
+                    if (imageMetadata.getUuid().equals(id)) {
+                        imageBean.getId().set(imageMetadata.getUuid());
+                        imageBean.getRating().set(imageMetadata.getRating());
+                        imageBean.getThumbnailUrl().set(photoniaService.getImageThumbnailUrl(imageMetadata.getUuid()));
+                    }
+                }
             }
         }
     }

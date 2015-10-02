@@ -1,19 +1,26 @@
 package com.guigarage.photonia.service;
 
-import com.guigarage.photonia.Album;
-import com.guigarage.photonia.folder.TrashFolder;
-import com.guigarage.photonia.thumbnail.ThumbnailCache;
+import com.guigarage.photonia.v2.ImageMetadata;
+import com.guigarage.photonia.v2.PhotoniaAlbum;
+import com.guigarage.photonia.v2.PhotoniaThumbnailCache;
+
+import java.util.List;
 
 public interface PhotoniaService {
 
-    Album getAlbum();
+    List<PhotoniaAlbum> getAllAlbums();
 
-    ThumbnailCache getThumbnailCache();
+    PhotoniaAlbum getAlbumById(String albumId);
 
-    TrashFolder getTrashFolder();
+    PhotoniaThumbnailCache getThumbnailCache();
 
-    String getImageUrl(String id);
+    String getImageUrl(String imageId);
 
-    String getImageThumbnailUrl(String id);
+    String getImageThumbnailUrl(String imageId);
 
+    ImageMetadata getImageById(String imageId);
+
+    ImageMetadata getNextImage(String imageId);
+
+    ImageMetadata getPrevImage(String imageId);
 }

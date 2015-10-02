@@ -9,6 +9,8 @@ import com.guigarage.photonia.controller.library.LibraryViewBean;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import org.controlsfx.control.GridView;
 
 public class LibraryViewController extends AbstractViewController<LibraryViewBean> {
 
@@ -16,7 +18,10 @@ public class LibraryViewController extends AbstractViewController<LibraryViewBea
     private Button newAlbumButton;
 
     @FXML
-    private ListView<LibraryViewAlbumBean> albumList;
+    private GridView<LibraryViewAlbumBean> albumGrid;
+
+    @FXML
+    private Slider imageSizeSlider;
 
     private final Routing routing;
 
@@ -27,12 +32,16 @@ public class LibraryViewController extends AbstractViewController<LibraryViewBea
 
     @FXML
     public void initialize() {
-        albumList.setCellFactory(c -> new AlbumCell(s -> routing.showAlbum(s)));
+        imageSizeSlider.setMin(64);
+        imageSizeSlider.setMax(400);
+        imageSizeSlider.valueProperty().bindBidirectional(albumGrid.cellHeightProperty());
+        imageSizeSlider.valueProperty().bindBidirectional(albumGrid.cellWidthProperty());
+        albumGrid.setCellFactory(c -> new LibraryGridCell(s -> routing.showAlbum(s)));
     }
 
     @Override
     protected void init(ControllerProxy<LibraryViewBean> controller) {
         LibraryViewBean model = controller.getModel();
-        albumList.setItems(FXBinder.wrapList(model.getAlbums()));
+        albumGrid.setItems(FXBinder.wrapList(model.getAlbums()));
     }
 }

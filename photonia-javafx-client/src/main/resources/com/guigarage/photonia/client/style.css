@@ -1,0 +1,16 @@
+.tool-bar {
+    -fx-background-color: orange;
+    -fx-padding: 24px, 12px, 24px, 12px;
+}
+
+.tool-bar .button {
+    -fx-background-color: black, white;
+    -fx-background-insets: 0px, 2px;
+    -fx-background-radius: 8px, 6px;
+    -fx-text-fill: #000000
+}
+
+.tool-bar .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 24px;
+}

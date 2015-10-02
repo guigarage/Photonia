@@ -1,13 +1,12 @@
 package com.guigarage.photonia.controller;
 
 import com.canoo.dolphin.BeanManager;
-import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
 import com.canoo.dolphin.server.DolphinModel;
 import com.guigarage.photonia.controller.library.LibraryViewAlbumBean;
 import com.guigarage.photonia.controller.library.LibraryViewBean;
-import com.guigarage.photonia.folder.ImageFolder;
 import com.guigarage.photonia.service.PhotoniaService;
+import com.guigarage.photonia.v2.PhotoniaAlbum;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -20,7 +19,7 @@ public class LibraryViewController extends AbstractController implements AlbumOb
     private final PhotoniaService photoniaService;
 
     @DolphinModel
-    private LibraryViewBean bean;
+    private LibraryViewBean model;
 
     @Inject
     public LibraryViewController(BeanManager beanManager, PhotoniaService photoniaService) {
@@ -30,23 +29,30 @@ public class LibraryViewController extends AbstractController implements AlbumOb
 
     @PostConstruct
     private void updateBean() {
-        for (ImageFolder folder : photoniaService.getAlbum().getFolders()) {
-            LibraryViewAlbumBean folderBean = beanManager.create(LibraryViewAlbumBean.class);
-            folderBean.getId().set(folder.getUuid());
-            folderBean.getName().set(folder.getName());
-            folderBean.getImageCount().set(folder.getImages().size());
-            if(!folder.getImages().isEmpty()) {
-                folderBean.getCoverUrl().set(photoniaService.getImageThumbnailUrl(folder.getImages().get(0).getUuid()));
+        for (PhotoniaAlbum album : photoniaService.getAllAlbums()) {
+            LibraryViewAlbumBean albumBean = beanManager.create(LibraryViewAlbumBean.class);
+            albumBean.getId().set(album.getMetadata().getUuid());
+            albumBean.getName().set(album.getMetadata().getFolderName());
+            albumBean.getImageCount().set(album.getMetadata().getImages().size());
+            if (!album.getMetadata().getImages().isEmpty()) {
+                albumBean.getCoverUrl().set(photoniaService.getImageThumbnailUrl(album.getMetadata().getImages().get(0).getUuid()));
             }
-            bean.getAlbums().add(folderBean);
+            model.getAlbums().add(albumBean);
         }
     }
 
+
     @Override
     public void albumChanged(String id) {
-        for(LibraryViewAlbumBean albumBean : bean.getAlbums()) {
-            if(albumBean.getId().equals(id)) {
-                //TODO: Update Name etc.
+        for (LibraryViewAlbumBean albumBean : model.getAlbums()) {
+            if (albumBean.getId().equals(id)) {
+                PhotoniaAlbum album = photoniaService.getAlbumById(id);
+                albumBean.getId().set(album.getMetadata().getUuid());
+                albumBean.getName().set(album.getMetadata().getFolderName());
+                albumBean.getImageCount().set(album.getMetadata().getImages().size());
+                if (!album.getMetadata().getImages().isEmpty()) {
+                    albumBean.getCoverUrl().set(photoniaService.getImageThumbnailUrl(album.getMetadata().getImages().get(0).getUuid()));
+                }
             }
         }
     }

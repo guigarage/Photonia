@@ -1,5 +1,6 @@
 package com.guigarage.photonia.v2;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +12,7 @@ public class FolderMetadata implements Serializable {
 
     private String uuid;
 
-    private String folderName;
+    private transient File localFolder;
 
     private List<ImageMetadata> images;
 
@@ -28,11 +29,7 @@ public class FolderMetadata implements Serializable {
     }
 
     public String getFolderName() {
-        return folderName;
-    }
-
-    public void setFolderName(String folderName) {
-        this.folderName = folderName;
+        return localFolder.getName();
     }
 
     public List<ImageMetadata> getImages() {
@@ -41,5 +38,13 @@ public class FolderMetadata implements Serializable {
 
     public void setImages(List<ImageMetadata> images) {
         this.images = images;
+    }
+
+    public File getLocalFolder() {
+        return localFolder;
+    }
+
+    public void setLocalFolder(File localFolder) {
+        this.localFolder = localFolder;
     }
 }

@@ -42,11 +42,12 @@ public class PhotoniaAlbum {
 
     private synchronized void createMetadataFromFolder() throws Exception {
         metadata = new FolderMetadata();
-        metadata.setFolderName(localFolder.getName());
+        metadata.setLocalFolder(localFolder);
         metadata.setUuid(UUID.randomUUID().toString());
         for (File child : localFolder.listFiles()) {
             if (FilenameUtils.getExtension(child.getName()).toLowerCase().equals("jpeg") || FilenameUtils.getExtension(child.getName()).toLowerCase().equals("jpg")) {
                 ImageMetadata imageMetadata = ImageMetadata.createFromFile(child);
+                imageMetadata.setFolderMetadata(metadata);
                 metadata.getImages().add(imageMetadata);
             }
         }
@@ -56,6 +57,10 @@ public class PhotoniaAlbum {
         File store = getStore();
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         metadata = gson.fromJson(FileUtils.readFileToString(store), FolderMetadata.class);
+        metadata.setLocalFolder(localFolder);
+        for(ImageMetadata imageMetadata : metadata.getImages()) {
+            imageMetadata.setFolderMetadata(metadata);
+        }
     }
 
     private synchronized void recreateStoreByMetadata() throws Exception {
@@ -68,15 +73,8 @@ public class PhotoniaAlbum {
         FileUtils.writeStringToFile(store, storeContent);
     }
 
-    public File getLocalFolder() {
-        return localFolder;
-    }
-
     public FolderMetadata getMetadata() {
         return metadata;
     }
 
-    public static void main(String... args) throws Exception {
-       PhotoniaAlbum folder = new PhotoniaAlbum(new File("/Users/hendrikebbers/Desktop/photonia/album/Hochzeit Claudine und Marcel 2"));
-    }
 }

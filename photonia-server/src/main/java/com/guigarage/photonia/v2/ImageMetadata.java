@@ -5,17 +5,18 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.exif.ExifSubIFDDirectory;
 import com.drew.metadata.exif.makernotes.NikonType2MakernoteDirectory;
 import com.drew.metadata.file.FileMetadataDirectory;
-import com.guigarage.photonia.MetadataUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Created by hendrikebbers on 21.09.15.
  */
-public class ImageMetadata {
+public class ImageMetadata implements Serializable{
+
+    private transient FolderMetadata folderMetadata;
 
     private String uuid;
 
@@ -24,8 +25,6 @@ public class ImageMetadata {
     private String imageName;
 
     private String fileName;
-
-    private String rawImageName;
 
     private String lastModified;
 
@@ -87,14 +86,6 @@ public class ImageMetadata {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public String getRawImageName() {
-        return rawImageName;
-    }
-
-    public void setRawImageName(String rawImageName) {
-        this.rawImageName = rawImageName;
     }
 
     public String getUuid() {
@@ -175,5 +166,17 @@ public class ImageMetadata {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public FolderMetadata getFolderMetadata() {
+        return folderMetadata;
+    }
+
+    public void setFolderMetadata(FolderMetadata folderMetadata) {
+        this.folderMetadata = folderMetadata;
+    }
+
+    public File toLocalFile() {
+        return new File(folderMetadata.getLocalFolder(), fileName);
     }
 }

@@ -5,7 +5,7 @@ import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
 import com.canoo.dolphin.server.DolphinModel;
 import com.guigarage.photonia.service.PhotoniaService;
-import com.guigarage.photonia.types.JpegImageFile;
+import com.guigarage.photonia.v2.ImageMetadata;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -13,18 +13,15 @@ import javax.inject.Inject;
 @DolphinController("ImageViewController")
 public class ImageViewController extends AbstractController implements ImageObserver {
 
-    private final BeanManager beanManager;
-
     private final PhotoniaService photoniaService;
 
     @DolphinModel
     private ImageViewBean model;
 
-    private JpegImageFile imageFile;
+    private ImageMetadata imageFile;
 
     @Inject
-    public ImageViewController(BeanManager beanManager, PhotoniaService photoniaService) {
-        this.beanManager = beanManager;
+    public ImageViewController(PhotoniaService photoniaService) {
         this.photoniaService = photoniaService;
     }
 
@@ -43,20 +40,22 @@ public class ImageViewController extends AbstractController implements ImageObse
         });
 
         model.idProperty().onChanged(e -> {
-            imageFile = photoniaService.getAlbum().getImageFileById(model.getId());
-            model.ratingProperty().set(imageFile.getRating());
-            model.exposureTimeProperty().set(imageFile.getExposureTime());
-            model.fNumberProperty().set(imageFile.getfNumber());
-            model.focalLengthProperty().set(imageFile.getFocalLength());
-            model.folderNameProperty().set(imageFile.getParentImageFolder().getName());
-            model.hasRawProperty().set(imageFile.getRawImageFile() != null);
-            model.isoProperty().set(imageFile.getIso());
-            model.lastModifiedProperty().set(imageFile.getLastModified());
-            model.lensProperty().set(imageFile.getLens());
-            model.imageUrlProperty().set(photoniaService.getImageUrl(imageFile.getUuid()));
-            model.nextIdProperty().set(imageFile.getParentImageFolder().getNext(imageFile).getUuid());
-            model.prevIdProperty().set(imageFile.getParentImageFolder().getPrev(imageFile).getUuid());
+            update();
         });
+    }
+
+    private void update() {
+        imageFile = photoniaService.getImageById(model.getId());
+        model.ratingProperty().set(imageFile.getRating());
+        model.exposureTimeProperty().set(imageFile.getExposureTime());
+        model.fNumberProperty().set(imageFile.getfNumber());
+        model.focalLengthProperty().set(imageFile.getFocalLength());
+        model.isoProperty().set(imageFile.getIso());
+        model.lastModifiedProperty().set(imageFile.getLastModified());
+        model.lensProperty().set(imageFile.getLens());
+        model.imageUrlProperty().set(photoniaService.getImageUrl(imageFile.getUuid()));
+        model.nextIdProperty().set(photoniaService.getNextImage(imageFile.getUuid()).getUuid());
+        model.prevIdProperty().set(photoniaService.getPrevImage(imageFile.getUuid()).getUuid());
     }
 
     @DolphinAction("showNext")
@@ -81,8 +80,8 @@ public class ImageViewController extends AbstractController implements ImageObse
 
     @Override
     public void imageChanged(String id) {
-        if(model.idProperty().equals(id)) {
-            //TODO: Update Image
+        if (model.idProperty().equals(id)) {
+            update();
         }
     }
 }
