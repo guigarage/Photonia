@@ -14,7 +14,9 @@
     "tests"
   ],
   "dependencies": {
+    "dolphin-polymer": "~0.5.1",
     "iron-image": "PolymerElements/iron-image#~1.0.2",
+    "iron-pages": "PolymerElements/iron-pages#~1.0.3",
     "jquery-ui": "~1.11.4",
     "paper-elements": "PolymerElements/paper-elements#~1.0.5",
     "polymer": "Polymer/polymer#^1.0.0"

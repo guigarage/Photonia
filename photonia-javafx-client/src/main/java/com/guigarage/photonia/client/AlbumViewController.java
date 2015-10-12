@@ -1,13 +1,16 @@
 package com.guigarage.photonia.client;
 
-import com.canoo.dolphin.client.*;
+import com.canoo.dolphin.client.AbstractViewController;
+import com.canoo.dolphin.client.ClientContext;
+import com.canoo.dolphin.client.ControllerProxy;
 import com.canoo.dolphin.client.javafx.FXBinder;
 import com.guigarage.photonia.controller.album.AlbumViewBean;
 import com.guigarage.photonia.controller.album.AlbumViewImageBean;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
+import org.controlsfx.control.GridView;
 
 public class AlbumViewController extends AbstractViewController<AlbumViewBean> {
 
@@ -15,10 +18,13 @@ public class AlbumViewController extends AbstractViewController<AlbumViewBean> {
     private Label albumNameLabel;
 
     @FXML
-    private ListView<AlbumViewImageBean> imageList;
+    private GridView<AlbumViewImageBean> imageGrid;
 
     @FXML
     private Button backButton;
+
+    @FXML
+    private Slider imageSizeSlider;
 
     private String id;
 
@@ -32,8 +38,14 @@ public class AlbumViewController extends AbstractViewController<AlbumViewBean> {
 
     @FXML
     public void initialize() {
-        imageList.setCellFactory(e -> new ImageCell(id -> routing.showImage(id)));
-        backButton.setOnAction(e -> routing.showLibrary());
+        imageGrid.setCellFactory(e -> new AlbumGridCell(id -> routing.showImage(id)));
+        backButton.setOnAction(e -> {
+            routing.showLibrary();
+        });
+        imageSizeSlider.setMin(64);
+        imageSizeSlider.setMax(400);
+        imageSizeSlider.valueProperty().bindBidirectional(imageGrid.cellHeightProperty());
+        imageSizeSlider.valueProperty().bindBidirectional(imageGrid.cellWidthProperty());
     }
 
     @Override
@@ -41,6 +53,6 @@ public class AlbumViewController extends AbstractViewController<AlbumViewBean> {
         AlbumViewBean model = controller.getModel();
         model.idProperty().set(id);
         FXBinder.bindBidirectional(albumNameLabel.textProperty(), model.nameProperty());
-        imageList.setItems(FXBinder.wrapList(model.imagesProperty()));
+        imageGrid.setItems(FXBinder.wrapList(model.imagesProperty()));
     }
 }

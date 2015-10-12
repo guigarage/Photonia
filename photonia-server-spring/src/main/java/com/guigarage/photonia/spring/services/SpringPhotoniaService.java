@@ -5,11 +5,16 @@ import com.guigarage.photonia.service.PhotoniaService;
 import com.guigarage.photonia.v2.ImageMetadata;
 import com.guigarage.photonia.v2.PhotoniaAlbum;
 import com.guigarage.photonia.v2.PhotoniaThumbnailCache;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import java.io.File;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +27,12 @@ public class SpringPhotoniaService implements PhotoniaService {
 
     @Inject
     private AsyncService asyncService;
+
+    @Inject
+    private ServletContext servletContext;
+
+    @Value("${server.port:8080}")
+    private int port;
 
     // @Inject
     // private DolphinEventBus eventBus;
@@ -73,12 +84,20 @@ public class SpringPhotoniaService implements PhotoniaService {
 
     @Override
     public String getImageUrl(String id) {
-        return "http://localhost:8080/images/get/" + id;
+        try {
+            return "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + "/" + servletContext.getContextPath() + "/images/get/" + id;
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public String getImageThumbnailUrl(String id) {
-        return "http://localhost:8080/thumbs/get/" + id;
+        try {
+            return "http://" + InetAddress.getLocalHost().getHostAddress() + ":" + port + "/" + servletContext.getContextPath() + "/thumbs/get/" + id;
+        } catch (UnknownHostException e) {
+           throw new RuntimeException(e);
+        }
     }
 
     @Override

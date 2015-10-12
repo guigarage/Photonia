@@ -39,6 +39,7 @@ public class LibraryViewController extends AbstractController implements AlbumOb
             }
             model.getAlbums().add(albumBean);
         }
+        model.getAlbumCount().set("123");
     }
 
 

@@ -5,7 +5,7 @@
     <link rel="import" href="bower_components/paper-card/paper-card.html">
 </head>
 
-<dom-module id="collection-card">
+<dom-module id="library-card">
     <style>
         .card {
             margin: 12px;
@@ -13,10 +13,10 @@
     </style>
 
     <template>
-        <paper-card heading="New York 2015" class="card">
+        <paper-card heading="{{computeTitle(imageData.name, imageData.imageCount)}}" class="card">
             <div class="card-content">
                 <iron-image width={{imageWidth}} height={{imageHeight}} sizing="cover"
-                            src="http://lorempixel.com/800/800"></iron-image>
+                            src="{{imageData.coverUrl}}"></iron-image>
             </div>
         </paper-card>
     </template>
@@ -24,7 +24,7 @@
 
 <script>
     Polymer({
-        is: "collection-card",
+        is: "library-card",
         properties: {
             imageWidth: {
                 type: Number,
@@ -36,12 +36,10 @@
                 notify: true,
                 value: 240
             },
-            client: Object,
-            collection: Object
+            imageData: Object
         },
-        eventCallback: function(e){
-        },
-        eventCallback2: function(e){
+        computeTitle: function(name, count) {
+            return name + ' (' + count + ')';
         }
     });
 </script>

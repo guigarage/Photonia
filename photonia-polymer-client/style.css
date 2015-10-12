@@ -34,3 +34,7 @@ section > div {
 .main-wrapper {
     background: darkslategray;
 }
+
+.list-background {
+    background: white;
+}

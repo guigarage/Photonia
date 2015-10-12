@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="library-view.html" rel="import">
+    <link href="album-view.html" rel="import">
+</head>
+
+<dom-module id="app-view">
+
+    <template>
+        <iron-pages selected="{{selectedPage}}">
+            <library-view selected-album="{{albumIndex}}" on-album-selected="onAlbumChanged"></library-view>
+            <album-view album-id="{{albumIndex}}"></album-view>
+        </iron-pages>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "app-view",
+        properties: {
+            albumIndex: {
+                type: String,
+                notify: true
+            },
+            imageIndex: {
+                type: String,
+                notify: true
+            },
+            selectedPage: {
+                type: Number,
+                value: 0,
+                notify: true
+            }
+        },
+        onAlbumChanged: function (e) {
+            console.log("Album changed");
+            this.selectedPage = 1;
+        }
+    });
+</script>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/iron-image/iron-image.html">
+</head>
+
+<dom-module id="album-item">
+    <style>
+        .list-item {
+            padding: 32px;
+            border-width: 2px 0px 0px 0px;
+            border-style: solid;
+            border-color: darkgray;
+        }
+        .list-item-text {
+            font-size: 32px;
+            padding: 0px 12px 0px 12px;
+        }
+    </style>
+
+    <template>
+        <paper-item class="list-item">
+            <iron-image width=256 height=256 sizing="cover"
+                        src="{{imageData.thumbnailUrl}}"></iron-image>
+        </paper-item>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "album-item",
+        properties: {
+            imageData: Object
+        }
+    });
+</script>

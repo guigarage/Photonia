@@ -7,6 +7,12 @@ import com.canoo.dolphin.mapping.Property;
 @DolphinBean("LibraryViewBean")
 public class LibraryViewBean {
 
+    private Property<String> albumCount;
+
+    public Property<String> getAlbumCount() {
+        return albumCount;
+    }
+
     private ObservableList<LibraryViewAlbumBean> albums;
 
     public ObservableList<LibraryViewAlbumBean> getAlbums() {

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="import" href="bower_components/iron-image/iron-image.html">
+    <link rel="import" href="bower_components/paper-card/paper-card.html">
+</head>
+
+<dom-module id="album-card">
+    <style>
+        .card {
+            margin: 12px;
+        }
+    </style>
+
+    <template>
+        <paper-card class="card">
+            <div class="card-content">
+                <iron-image width={{imageWidth}} height={{imageHeight}} sizing="cover"
+                            src="{{imageData.thumbnailUrl}}"></iron-image>
+            </div>
+        </paper-card>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: "album-card",
+        properties: {
+            imageWidth: {
+                type: Number,
+                notify: true,
+                value: 280
+            },
+            imageHeight: {
+                type: Number,
+                notify: true,
+                value: 240
+            },
+            imageData: Object
+        },
+        computeTitle: function(name, count) {
+            return name + ' (' + count + ')';
+        }
+    });
+</script>

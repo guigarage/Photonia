@@ -5,13 +5,22 @@
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
-    <link rel="stylesheet" href="style.css"/>
-    <link href="collection-view.html" rel="import">
+
     <link rel="import" href="bower_components/paper-styles/paper-styles.html">
     <link rel="import" href="bower_components/font-roboto/roboto.html">
+    <link rel="import" href="bower_components/iron-pages/iron-pages.html">
+    <script src="bower_components/open-dolphin-js/dist/opendolphin.js"></script>
+    <script src="bower_components/dolphin-polymer/dist/dolphin-polymer.js"></script>
+    <script>
+        clientContext = dolphin.connect('http://192.168.2.102:8080/dolphin', {serverPush: false});
+    </script>
+
+    <link rel="stylesheet" href="style.css"/>
+
+    <link href="app-view.html" rel="import">
 
 </head>
 <body unresolved class="fullbleed">
-<collection-view></collection-view>
+<app-view></app-view>
 </body>
 </html>
