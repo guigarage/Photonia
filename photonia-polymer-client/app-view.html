@@ -10,7 +10,7 @@
     <template>
         <iron-pages selected="{{selectedPage}}">
             <library-view selected-album="{{albumIndex}}" on-album-selected="onAlbumChanged"></library-view>
-            <album-view album-id="{{albumIndex}}"></album-view>
+            <album-view album-id="{{albumIndex}}" on-back="navigateToLibraryView"></album-view>
         </iron-pages>
     </template>
 </dom-module>
@@ -34,8 +34,10 @@
             }
         },
         onAlbumChanged: function (e) {
-            console.log("Album changed");
             this.selectedPage = 1;
+        },
+        navigateToLibraryView: function (e) {
+            this.selectedPage = 0;
         }
     });
 </script>
