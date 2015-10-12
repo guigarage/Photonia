@@ -54,8 +54,8 @@ public class ImageViewController extends AbstractController implements ImageObse
         model.lastModifiedProperty().set(imageFile.getLastModified());
         model.lensProperty().set(imageFile.getLens());
         model.imageUrlProperty().set(photoniaService.getImageUrl(imageFile.getUuid()));
-        model.nextIdProperty().set(photoniaService.getNextImage(imageFile.getUuid()).getUuid());
-        model.prevIdProperty().set(photoniaService.getPrevImage(imageFile.getUuid()).getUuid());
+//        model.nextIdProperty().set(photoniaService.getNextImage(imageFile.getUuid()).getUuid());
+//        model.prevIdProperty().set(photoniaService.getPrevImage(imageFile.getUuid()).getUuid());
     }
 
     @DolphinAction("showNext")

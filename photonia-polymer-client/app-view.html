@@ -3,14 +3,16 @@
 <head>
     <link href="library-view.html" rel="import">
     <link href="album-view.html" rel="import">
+    <link href="image-view.html" rel="import">
 </head>
 
 <dom-module id="app-view">
 
     <template>
         <iron-pages selected="{{selectedPage}}">
-            <library-view selected-album="{{albumIndex}}" on-album-selected="onAlbumChanged"></library-view>
-            <album-view album-id="{{albumIndex}}" on-back="navigateToLibraryView"></album-view>
+            <library-view selected-album="{{albumIndex}}" on-album-selected="navigateToAlbumView"></library-view>
+            <album-view album-id="{{albumIndex}}" selected-image="{{imageIndex}}" on-image-selected="navigateToImageView" on-back="navigateToLibraryView"></album-view>
+            <image-view image-id="{{imageIndex}}" on-back="navigateToAlbumView"></image-view>
         </iron-pages>
     </template>
 </dom-module>
@@ -33,7 +35,10 @@
                 notify: true
             }
         },
-        onAlbumChanged: function (e) {
+        navigateToImageView: function (e) {
+            this.selectedPage = 2;
+        },
+        navigateToAlbumView: function (e) {
             this.selectedPage = 1;
         },
         navigateToLibraryView: function (e) {

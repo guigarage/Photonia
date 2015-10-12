@@ -43,14 +43,14 @@
             <template is="dom-if" if="{{mobile}}">
                 <div class="layout center-justified list-background">
                     <template id="tasks" is="dom-repeat" items="{{model.images}}">
-                        <album-item image-data="{{item}}"></album-item>
+                        <album-item on-click="handleImageSelection" image-data="{{item}}"></album-item>
                     </template>
                 </div>
             </template>
             <template is="dom-if" if="{{!mobile}}">
                 <div class="card-holder horizontal layout center-justified wrap">
                     <template id="tasks" is="dom-repeat" items="{{model.images}}">
-                        <album-card class=".collection-card" image-width={{imageWidth}}
+                        <album-card on-click="handleImageSelection" class=".collection-card" image-width={{imageWidth}}
                                       image-height={{imageHeight}} image-data="{{item}}"></album-card>
                     </template>
                 </div>
@@ -75,6 +75,10 @@
                 type: String,
                 value: "-1",
                 observer: '_albumIdChanged'
+            },
+            selectedImage: {
+                type: String,
+                notify: true
             }
         },
         behaviors: [clientContext.createBehavior('AlbumViewController')],
@@ -89,6 +93,10 @@
         },
         handleBack: function(e) {
             this.fire('back');
+        },
+        handleImageSelection: function(e) {
+            this.selectedImage = e.currentTarget.imageData.id;
+            this.fire('image-selected');
         }
     });
 </script>
