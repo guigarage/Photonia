@@ -28,12 +28,12 @@ public class PhotoniaAlbum {
             localFolder.mkdirs();
         }
 
-        if (!getStore().exists()) {
+        //if (!getStore().exists()) {
             createMetadataFromFolder();
-            recreateStoreByMetadata();
-        } else {
-            createMetadataFromStore();
-        }
+        //    recreateStoreByMetadata();
+        //} else {
+        //    createMetadataFromStore();
+       // }
     }
 
     private File getStore() {

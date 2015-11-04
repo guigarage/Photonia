@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="import" href="bower_components/iron-media-query/iron-media-query.html">
+    <link rel="import" href="bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
     <link rel="import" href="bower_components/iron-icons/iron-icons.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="import" href="bower_components/paper-header-panel/paper-header-panel.html">
@@ -10,6 +11,7 @@
     <link rel="import" href="bower_components/paper-menu-button/paper-menu-button.html">
     <link rel="import" href="bower_components/paper-menu/paper-menu.html">
     <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/iron-list/iron-list.html">
     <link rel="import" href="album-card.html">
     <link rel="import" href="album-item.html">
 </head>
@@ -18,44 +20,32 @@
     <style>
         .paper-toolbar {
             background: orange;
+            border-bottom-style: solid;
+            border-bottom-width: 2px;
+            border-bottom-color: red;
         }
-
         .card-holder {
             margin: 24px;
         }
-
         .main-wrapper {
             background: darkslategray;
+        }
+        .icon {
+            color: white;
         }
     </style>
 
     <template>
-        <iron-media-query query="(max-device-width: 667px)" query-matches="{{mobile}}"></iron-media-query>
-        <paper-header-panel class="main-wrapper">
-            <paper-toolbar class="medium-tall">
-                <paper-icon-button icon="arrow-back" on-click="handleBack">Back</paper-icon-button>
-                <span class="title">[[model.name]]</span>
-                <template is="dom-if" if="{{!mobile}}">
-                    <paper-slider min="160" max="400"
-                                  on-immediate-value-change="eventCallback"></paper-slider>
+        <div class="layout fit vertical main-wrapper">
+            <div class="paper-toolbar">
+                <paper-icon-button class="icon" icon="arrow-back" on-click="handleBack">Back</paper-icon-button>
+            </div>
+            <iron-list class="flex" items="[[model.images]]" as="item">
+                <template>
+                    <album-item on-click="handleImageSelection" image-data="{{item}}"></album-item>
                 </template>
-            </paper-toolbar>
-            <template is="dom-if" if="{{mobile}}">
-                <div class="layout center-justified list-background">
-                    <template id="tasks" is="dom-repeat" items="{{model.images}}">
-                        <album-item on-click="handleImageSelection" image-data="{{item}}"></album-item>
-                    </template>
-                </div>
-            </template>
-            <template is="dom-if" if="{{!mobile}}">
-                <div class="card-holder horizontal layout center-justified wrap">
-                    <template id="tasks" is="dom-repeat" items="{{model.images}}">
-                        <album-card on-click="handleImageSelection" class=".collection-card" image-width={{imageWidth}}
-                                      image-height={{imageHeight}} image-data="{{item}}"></album-card>
-                    </template>
-                </div>
-            </template>
-        </paper-header-panel>
+            </iron-list>
+        </div>
     </template>
 </dom-module>
 

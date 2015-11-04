@@ -179,4 +179,9 @@ public class ImageMetadata implements Serializable{
     public File toLocalFile() {
         return new File(folderMetadata.getLocalFolder(), fileName);
     }
+
+    public void delete() {
+        getFolderMetadata().getImages().remove(this);
+        toLocalFile().delete();
+    }
 }

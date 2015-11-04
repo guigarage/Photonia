@@ -1,6 +1,5 @@
 package com.guigarage.photonia.controller;
 
-import com.canoo.dolphin.BeanManager;
 import com.canoo.dolphin.server.DolphinAction;
 import com.canoo.dolphin.server.DolphinController;
 import com.canoo.dolphin.server.DolphinModel;
@@ -54,8 +53,8 @@ public class ImageViewController extends AbstractController implements ImageObse
         model.lastModifiedProperty().set(imageFile.getLastModified());
         model.lensProperty().set(imageFile.getLens());
         model.imageUrlProperty().set(photoniaService.getImageUrl(imageFile.getUuid()));
-//        model.nextIdProperty().set(photoniaService.getNextImage(imageFile.getUuid()).getUuid());
-//        model.prevIdProperty().set(photoniaService.getPrevImage(imageFile.getUuid()).getUuid());
+        model.nextIdProperty().set(photoniaService.getNextImage(imageFile.getUuid()).getUuid());
+        model.prevIdProperty().set(photoniaService.getPrevImage(imageFile.getUuid()).getUuid());
     }
 
     @DolphinAction("showNext")
@@ -76,6 +75,12 @@ public class ImageViewController extends AbstractController implements ImageObse
     @DolphinAction("backToAlbum")
     public void onBackToAlbum() {
         throw new RuntimeException("Not Implemented");
+    }
+
+    @DolphinAction("delete")
+    public void onDelete() {
+        photoniaService.delete(model.getId());
+        onShowNext();
     }
 
     @Override

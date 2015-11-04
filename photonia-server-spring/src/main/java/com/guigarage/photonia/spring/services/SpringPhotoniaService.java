@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -113,12 +112,42 @@ public class SpringPhotoniaService implements PhotoniaService {
     }
 
     @Override
-    public ImageMetadata getNextImage(String imageId) {
+    public ImageMetadata getPrevImage(String imageId) {
+        for (PhotoniaAlbum album : albums) {
+            for(int i = 0; i < album.getMetadata().getImages().size(); i++) {
+                if (album.getMetadata().getImages().get(i).getUuid().equals(imageId)) {
+                    if(i > 0) {
+                        return album.getMetadata().getImages().get(i-1);
+                    } else {
+                        return album.getMetadata().getImages().get(album.getMetadata().getImages().size() - 1);
+                    }
+                }
+            }
+        }
         return null;
     }
 
     @Override
-    public ImageMetadata getPrevImage(String imageId) {
+    public void delete(String id) {
+        ImageMetadata metadata = getImageById(id);
+        if(metadata != null) {
+            metadata.delete();
+        }
+    }
+
+    @Override
+    public ImageMetadata getNextImage(String imageId) {
+        for (PhotoniaAlbum album : albums) {
+            for(int i = 0; i < album.getMetadata().getImages().size(); i++) {
+                if (album.getMetadata().getImages().get(i).getUuid().equals(imageId)) {
+                    if(i < album.getMetadata().getImages().size() - 1) {
+                        return album.getMetadata().getImages().get(i+1);
+                    } else {
+                        return album.getMetadata().getImages().get(0);
+                    }
+                }
+            }
+        }
         return null;
     }
 }

@@ -23,4 +23,6 @@ public interface PhotoniaService {
     ImageMetadata getNextImage(String imageId);
 
     ImageMetadata getPrevImage(String imageId);
+
+    void delete(String id);
 }

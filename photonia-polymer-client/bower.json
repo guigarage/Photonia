@@ -15,7 +15,9 @@
   ],
   "dependencies": {
     "dolphin-polymer": "~0.5.1",
+    "iron-a11y-keys": "PolymerElements/iron-a11y-keys#~1.0.2",
     "iron-image": "PolymerElements/iron-image#~1.0.2",
+    "iron-list": "PolymerElements/iron-list#~1.1.5",
     "iron-pages": "PolymerElements/iron-pages#~1.0.3",
     "jquery-ui": "~1.11.4",
     "paper-elements": "PolymerElements/paper-elements#~1.0.5",
