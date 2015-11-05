@@ -19,7 +19,7 @@ public class AlbumViewBean {
         return name;
     }
 
-    public ObservableList<AlbumViewImageBean> imagesProperty() {
+    public ObservableList<AlbumViewImageBean> getImages() {
         return images;
     }
 

@@ -10,8 +10,6 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>photonia-server</module>
-        <module>photonia-polymer-client</module>
         <module>photonia-model</module>
         <module>photonia-javafx-client</module>
         <module>photonia-server-spring</module>

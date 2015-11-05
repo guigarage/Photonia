@@ -53,6 +53,6 @@ public class AlbumViewController extends AbstractViewController<AlbumViewBean> {
         AlbumViewBean model = controller.getModel();
         model.idProperty().set(id);
         FXBinder.bindBidirectional(albumNameLabel.textProperty(), model.nameProperty());
-        imageGrid.setItems(FXBinder.wrapList(model.imagesProperty()));
+        imageGrid.setItems(FXBinder.wrapList(model.getImages()));
     }
 }
